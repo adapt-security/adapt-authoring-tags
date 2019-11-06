@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "tag",
+  "description": "Tag metadata applied to other objects",
+  "type": "object",
+  "properties": {
+    "tag": {
+      "type": "object",
+      "title": {
+        "description": "The tag title",
+        "type": "string"
+      }
+    }
+  },
+  "required": ["title"]
+}
