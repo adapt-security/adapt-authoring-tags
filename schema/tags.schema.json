@@ -7,7 +7,7 @@
     "tags": {
       "type": "array",
       "uniqueItems": true,
-      "items": { "$ref": "#tag" }
+      "items": { "$ref": "tag" }
     }
   }
 }
