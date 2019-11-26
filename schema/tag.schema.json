@@ -5,12 +5,9 @@
   "description": "Tag metadata applied to other objects",
   "type": "object",
   "properties": {
-    "tag": {
-      "type": "object",
-      "title": {
-        "description": "The tag title",
-        "type": "string"
-      }
+    "title": {
+      "description": "The tag title",
+      "type": "string"
     }
   },
   "required": ["title"]
