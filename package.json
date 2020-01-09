@@ -4,12 +4,6 @@
   "description": "Module for managing tags",
   "homepage": "https://github.com/adapt-security/adapt-authoring-tags",
   "main": "index.js",
-  "adapt_authoring": {
-    "module": true,
-    "documentation": {
-      "enable": true
-    }
-  },
   "peerDependencies": {
     "adapt-authoring-api": "github:adapt-security/adapt-authoring-api.git",
     "adapt-authoring-core": "github:adapt-security/adapt-authoring-core.git",
