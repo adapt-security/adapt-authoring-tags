@@ -1,4 +1,16 @@
 scenarios:
   - flow:
-    - get:
-        url: "/tags"
+      - post:
+          url: "/tags"
+          json:
+              title: 'test tag title'
+          capture:
+              json: "$._id"
+              as: "id"
+      - put:
+          url: "/tags/{{id}}"
+          json:
+              title: 'UPDATED'
+              idTest: '{{id}}'
+      - get:
+          url: "/tags/{{id}}"
