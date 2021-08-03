@@ -6,12 +6,15 @@
     "with": {
       "properties": {
         "tags": {
+          "title": "Tags",
+          "description": "Add tags by entering one or more words, separated with a comma (,)",
           "type": "array",
           "uniqueItems": true,
           "items": {
             "type": "string",
             "isObjectId": true
-          }
+          },
+          "_backboneForms": "Tags"
         }
       }
     }
