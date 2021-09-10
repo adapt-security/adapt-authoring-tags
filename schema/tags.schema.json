@@ -9,6 +9,7 @@
           "title": "Tags",
           "description": "Add tags by entering one or more words, separated with a comma (,)",
           "type": "array",
+          "default": [],
           "uniqueItems": true,
           "items": {
             "type": "string",
