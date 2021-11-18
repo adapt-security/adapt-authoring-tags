@@ -1,1 +1,1 @@
-export { default } from './lib/TagsModule';
+export { default } from './lib/TagsModule.js';
