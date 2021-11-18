@@ -1,1 +1,1 @@
-module.exports = require('./lib/TagsModule');
+export { default } from './lib/TagsModule.js';
