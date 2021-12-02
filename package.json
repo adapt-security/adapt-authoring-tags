@@ -2,11 +2,11 @@
   "name": "adapt-authoring-tags",
   "version": "0.0.1",
   "description": "Module for managing tags",
-  "homepage": "https://github.com/adaptlearning/adapt-authoring-tags",
+  "homepage": "https://github.com/adapt-security/adapt-authoring-tags",
   "license": "GPL-3.0",
   "type": "module",
   "main": "index.js",
-  "repository": "adaptlearning/adapt-authoring-tags",
+  "repository": "github:adapt-security/adapt-authoring-tags",
   "peerDependencies": {
     "adapt-authoring-api": "github:adapt-security/adapt-authoring-api",
     "adapt-authoring-core": "github:adapt-security/adapt-authoring-core",
