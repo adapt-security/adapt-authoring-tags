@@ -1,6 +1,11 @@
 import { describe, it, mock, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import TagsModule from '../lib/TagsModule.js'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 /**
  * Creates a TagsModule instance with mocked dependencies.
@@ -62,9 +67,6 @@ describe('TagsModule', () => {
       instance.schemaExtensionName = undefined
       instance.collectionName = undefined
       instance.modules = undefined
-      instance.routes = undefined
-      // useDefaultRouteConfig normally sets this.routes; mock must do the same
-      instance.useDefaultRouteConfig = mock.fn(function () { this.routes = [] })
       await instance.setValues()
       assert.equal(instance.root, 'tags')
     })
@@ -73,7 +75,6 @@ describe('TagsModule', () => {
       const { instance } = createInstance()
       instance.root = undefined
       instance.schemaName = undefined
-      instance.useDefaultRouteConfig = mock.fn(function () { this.routes = [] })
       await instance.setValues()
       assert.equal(instance.schemaName, 'tag')
     })
@@ -81,7 +82,6 @@ describe('TagsModule', () => {
     it('should set schemaExtensionName to "tags"', async () => {
       const { instance } = createInstance()
       instance.schemaExtensionName = undefined
-      instance.useDefaultRouteConfig = mock.fn(function () { this.routes = [] })
       await instance.setValues()
       assert.equal(instance.schemaExtensionName, 'tags')
     })
@@ -89,7 +89,6 @@ describe('TagsModule', () => {
     it('should set collectionName to "tags"', async () => {
       const { instance } = createInstance()
       instance.collectionName = undefined
-      instance.useDefaultRouteConfig = mock.fn(function () { this.routes = [] })
       await instance.setValues()
       assert.equal(instance.collectionName, 'tags')
     })
@@ -97,38 +96,19 @@ describe('TagsModule', () => {
     it('should initialise modules as an empty array', async () => {
       const { instance } = createInstance()
       instance.modules = undefined
-      instance.useDefaultRouteConfig = mock.fn(function () { this.routes = [] })
       await instance.setValues()
       assert.deepEqual(instance.modules, [])
     })
 
-    it('should call useDefaultRouteConfig', async () => {
+    it('should not call useDefaultRouteConfig', async () => {
       const { instance } = createInstance()
       instance.useDefaultRouteConfig = mock.fn(function () { this.routes = [] })
       await instance.setValues()
-      assert.equal(instance.useDefaultRouteConfig.mock.calls.length, 1)
-    })
-
-    it('should add autocomplete and transfer routes', async () => {
-      const { instance } = createInstance()
-      instance.useDefaultRouteConfig = mock.fn(function () { this.routes = [] })
-      await instance.setValues()
-
-      const autocompleteRoute = instance.routes.find(r => r.route === '/autocomplete')
-      assert.ok(autocompleteRoute, 'autocomplete route should exist')
-      assert.ok(autocompleteRoute.handlers.get, 'autocomplete should have GET handler')
-      assert.deepEqual(autocompleteRoute.permissions.get, ['read:content'])
-
-      const transferRoute = instance.routes.find(r => r.route === '/transfer/:_id')
-      assert.ok(transferRoute, 'transfer route should exist')
-      assert.ok(transferRoute.handlers.post, 'transfer should have POST handler')
-      assert.deepEqual(transferRoute.permissions.post, ['write:content'])
-      assert.equal(transferRoute.modifying, false)
+      assert.equal(instance.useDefaultRouteConfig.mock.calls.length, 0)
     })
 
     it('should call mongodb.setIndex for unique title', async () => {
       const { instance, mockMongodb } = createInstance()
-      instance.useDefaultRouteConfig = mock.fn(function () { this.routes = [] })
       await instance.setValues()
       assert.equal(mockMongodb.setIndex.mock.calls.length, 1)
       const call = mockMongodb.setIndex.mock.calls[0]
@@ -610,5 +590,28 @@ describe('TagsModule', () => {
       Object.getPrototypeOf(TagsModule.prototype).init = origSuperInit
       assert.equal(mockJsonschema.registerSchemasHook.tap.mock.calls.length, 1)
     })
+  })
+})
+
+describe('routes.json', () => {
+  const routesConfig = JSON.parse(readFileSync(resolve(__dirname, '../routes.json'), 'utf8'))
+
+  it('should define root as "tags"', () => {
+    assert.equal(routesConfig.root, 'tags')
+  })
+
+  it('should include an autocomplete route', () => {
+    const route = routesConfig.routes.find(r => r.route === '/autocomplete')
+    assert.ok(route, 'autocomplete route should exist')
+    assert.equal(route.handlers.get, 'autocompleteHandler')
+    assert.deepEqual(route.permissions.get, ['read:content'])
+  })
+
+  it('should include a transfer route', () => {
+    const route = routesConfig.routes.find(r => r.route === '/transfer/:_id')
+    assert.ok(route, 'transfer route should exist')
+    assert.equal(route.handlers.post, 'transferHandler')
+    assert.deepEqual(route.permissions.post, ['write:content'])
+    assert.equal(route.modifying, false)
   })
 })

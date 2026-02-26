@@ -1,0 +1,16 @@
+{
+  "root": "tags",
+  "routes": [
+    {
+      "route": "/autocomplete",
+      "handlers": { "get": "autocompleteHandler" },
+      "permissions": { "get": ["read:content"] }
+    },
+    {
+      "route": "/transfer/:_id",
+      "modifying": false,
+      "handlers": { "post": "transferHandler" },
+      "permissions": { "post": ["write:content"] }
+    }
+  ]
+}
