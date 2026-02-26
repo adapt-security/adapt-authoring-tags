@@ -1,0 +1,48 @@
+{
+  "root": "tags",
+  "routes": [
+    {
+      "route": "/autocomplete",
+      "handlers": { "get": "autocompleteHandler" },
+      "permissions": { "get": ["read:content"] },
+      "meta": {
+        "get": {
+          "summary": "Retrieve tags for UI autocomplete",
+          "description": "A streamlined query API to allow searching of tag data.",
+          "parameters": [{ "name": "term", "in": "query", "description": "Search term", "required": true }],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": { "type": "string" },
+                        "title": { "type": "string" },
+                        "value": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "route": "/transfer/:_id",
+      "modifying": false,
+      "handlers": { "post": "transferHandler" },
+      "permissions": { "post": ["write:content"] },
+      "meta": {
+        "post": {
+          "summary": "Transfer tag",
+          "description": "Transfers all items using one tag for another."
+        }
+      }
+    }
+  ]
+}
