@@ -478,16 +478,16 @@ describe('TagsModule', () => {
       assert.equal(parentInsert.mock.calls.length, 1)
     })
 
-    it('should pass through all arguments to find', async () => {
+    it('should pass through all arguments to findOne', async () => {
       const { instance } = createInstance()
-      instance.find = mock.fn(async () => [{ _id: 'tag1', title: 'test' }])
+      instance.findOne = mock.fn(async () => ({ _id: 'tag1', title: 'test' }))
       const data = { title: 'test' }
       const options = { validate: false }
       const mongoOpts = { limit: 1 }
       await instance.insert(data, options, mongoOpts)
-      const findArgs = instance.find.mock.calls[0].arguments
+      const findArgs = instance.findOne.mock.calls[0].arguments
       assert.equal(findArgs[0], data)
-      assert.equal(findArgs[1], options)
+      assert.deepEqual(findArgs[1], { validate: false, strict: false })
       assert.equal(findArgs[2], mongoOpts)
     })
   })
