@@ -6,7 +6,8 @@
   "properties": {
     "title": {
       "description": "The tag title",
-      "type": "string"
+      "type": "string",
+      "isSearchable": true
     }
   },
   "required": ["title"]
