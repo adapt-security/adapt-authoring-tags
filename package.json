@@ -19,7 +19,7 @@
     "extends": "@adaptlearning/semantic-release-config"
   },
   "dependencies": {
-    "adapt-authoring-api": "^3.0.0"
+    "adapt-authoring-api": "^4.0.1"
   },
   "peerDependencies": {
     "adapt-authoring-core": "^3.0.0",
